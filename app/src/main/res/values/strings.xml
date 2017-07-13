@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Professor+</string>
+    <string name="app_name_plus1">"Professor+"\n</string>
+    <string name="app_name_plus2"> \n\tis coming…</string>
+    <string name="app_recognize">Recognizing</string>
+    <string name="action_settings">Settings</string>
+    <string name="main_title">recent faces</string>
+    <string name="compare_vs">V.S.</string>
+    <string name="search_ing">Searching…</string>
+    <string name="upload_ing">Uploading…</string>
+    <string name="no_face">Hey~Come out!\nI Can\'t see your face!</string>
+    <string name="no_recognize">Ops~\nI Can\'t recognize you!</string>
+    <string name="no_face_tips">Face Missing.</string>
+    <string name="add_tips">Take or choose your photos\nby pushing button + in the bottom right corner </string>
+    <string name="compare_found_text_reddirect">Click me to read more information…</string>
+</resources>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp"
+    android:id="@+id/cardview"
+    card_view:cardPreventCornerOverlap="false"
+    android:foreground="?attr/selectableItemBackground"
+    android:clickable="true"
+    tools:targetApi="lollipop"
+    android:stateListAnimator="@drawable/lift_on_touch"
+    card_view:cardBackgroundColor="#e0e0e0"
+    card_view:cardCornerRadius="10dp"
+    card_view:cardElevation="4dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/card_img"
+            android:layout_alignParentTop="true"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/liqing"
+            android:scaleType="centerCrop"/>
+
+        <TextView
+            android:id="@+id/card_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/card_img"
+            android:paddingBottom="8dp"
+            android:layout_centerHorizontal="true"
+            android:paddingTop="8dp"
+            android:text="李庆"/>
+
+        <TextView
+            android:id="@+id/card_university"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/card_name"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="4dp"
+            android:text="西南财经大学"/>
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>
