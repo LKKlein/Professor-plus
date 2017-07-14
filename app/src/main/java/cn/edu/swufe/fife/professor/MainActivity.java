@@ -26,7 +26,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import cn.bmob.v3.Bmob;
 import pub.devrel.easypermissions.EasyPermissions;
 
 public class MainActivity extends AppCompatActivity implements MainActivityFragment.OnFragmentInteractionListener, EasyPermissions.PermissionCallbacks{
@@ -45,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
 
-        Bmob.initialize(this, "78ad704fb5b3239b0e981002bb2e4b55", "Bmob");
+//        Bmob.initialize(this, "78ad704fb5b3239b0e981002bb2e4b55", "Bmob");
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.photo_fab);
         FloatingActionButton pic_fab = (FloatingActionButton) findViewById(R.id.pick_fab);
         fab_menu = (FloatingActionMenu) findViewById(R.id.main_menu);
@@ -57,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
         if (EasyPermissions.hasPermissions(this, perms)) {//检查是否获取该权限
             Log.i("权限申请", "已获取权限");
         } else {
-            EasyPermissions.requestPermissions(this, "需要申请的权限，请授权...", 0, perms);
+            EasyPermissions.requestPermissions(this, "Professor+ needs you to grant us...", 0, perms);
         }
 
         fab.setOnClickListener(new View.OnClickListener() {

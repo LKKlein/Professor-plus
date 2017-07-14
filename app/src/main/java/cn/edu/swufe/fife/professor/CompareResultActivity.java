@@ -39,18 +39,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.crypto.Mac;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
-import cn.bmob.v3.Bmob;
-import cn.bmob.v3.BmobQuery;
-import cn.bmob.v3.exception.BmobException;
-import cn.bmob.v3.listener.FindListener;
-import cn.edu.swufe.fife.professor.been.BmobProfessor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -349,74 +343,6 @@ public class CompareResultActivity extends AppCompatActivity {
                         //------------------------   置信度在0.75以上的结果   ---------------------------//
 
                         if (confidence >= 75) {
-//                            runOnUiThread(new Runnable() {
-//
-//                                @Override
-//                                public void run() {
-//                                    search_text.setVisibility(View.GONE);
-//                                    no_result_img.setVisibility(View.GONE);
-//                                    compare_fab.setVisibility(View.GONE);
-//                                    simi.setVisibility(View.VISIBLE);
-//                                    no_result_simi.setVisibility(View.GONE);
-//
-//                                    Glide.with(CompareResultActivity.this)
-//                                            .load(Constant.download_domain + face_token + ".png")
-//                                            .diskCacheStrategy(DiskCacheStrategy.NONE)
-//                                            .transform(new CornersTransform(CompareResultActivity.this, 10))
-//                                            .crossFade()
-//                                            .into(simi);
-//
-//                                    BmobQuery<BmobProfessor> bmobQuery = new BmobQuery<>();
-//                                    bmobQuery.addWhereEqualTo("face_token", face_token);
-//                                    bmobQuery.findObjects(new FindListener<BmobProfessor>() {
-//                                        @Override
-//                                        public void done(List<BmobProfessor> list, BmobException e) {
-//                                            if(e==null){
-//                                                success_linear.setVisibility(View.VISIBLE);
-//
-//                                                final String names = list.get(0).getName();
-//                                                String university = list.get(0).getUniversity();
-//                                                final String page = list.get(0).getWeb_page();
-//                                                System.out.println(names);
-//                                                System.out.println(university);
-//                                                System.out.println(page);
-//
-//                                                SharedPreferences s = context.getSharedPreferences("recent", Context.MODE_PRIVATE);
-//                                                Set<String> recent = new LinkedHashSet<>(s.getStringSet("recent faces", new LinkedHashSet<String>()));
-//                                                Professor professor = new Professor(names, university, page, path, name);
-//                                                String professor_json = JSON.toJSONString(professor);
-//                                                Log.e("professor_json == >>", professor_json);
-//                                                recent.add(professor_json);
-//
-//                                                SharedPreferences.Editor editor = s.edit();
-//                                                editor.putStringSet("recent faces", recent);
-//                                                boolean editor_result = editor.commit();
-//                                                Log.e("out -- editor_result", String.valueOf(editor_result));
-//
-//                                                name_value.setText(names);
-//                                                university_value.setText(university);
-//                                                page_value.setText(getResources().getString(R.string.compare_found_text_reddirect));
-//                                                SpannableString ss = new SpannableString(getResources().getString(R.string.compare_found_text_reddirect));
-//                                                ss.setSpan(new URLSpan(getResources().getString(R.string.compare_found_text_reddirect)), 0, ss.length(),
-//                                                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-//                                                page_value.setOnClickListener(new View.OnClickListener() {
-//                                                    @Override
-//                                                    public void onClick(View v) {
-//                                                        Intent i = new Intent(CompareResultActivity.this, WebViewActivity.class);
-//                                                        i.putExtra("url", page);
-//                                                        i.putExtra("name", names);
-//                                                        startActivity(i);
-//                                                    }
-//                                                });
-//                                            }else{
-//                                                Log.i("bmob","失败："+e.getMessage()+","+e.getErrorCode());
-//                                            }
-//                                        }
-//                                    });
-//
-//                                }
-//                            });
-
                             String out = "";
                             try {
                                 out = getStringFromServer(Constant.search_url + face_token);

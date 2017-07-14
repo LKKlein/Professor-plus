@@ -13,7 +13,6 @@ import android.widget.ProgressBar;
 
 import com.tencent.smtt.sdk.WebChromeClient;
 import com.tencent.smtt.sdk.WebView;
-import com.tencent.smtt.sdk.WebViewClient;
 
 public class WebViewActivity extends AppCompatActivity {
     X5WebView tbsContent;
