@@ -24,6 +24,7 @@ public class WebViewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_web_view);
 
         String name = getIntent().getStringExtra("name");
+        int from = getIntent().getIntExtra("from", 0);
         Toolbar toolbar = (Toolbar) findViewById(R.id.web_toolbar);
         toolbar.setTitle(name);
         setSupportActionBar(toolbar);
@@ -40,6 +41,10 @@ public class WebViewActivity extends AppCompatActivity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE | WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         mTestHandler.sendEmptyMessageDelayed(MSG_INIT_UI, 5);
+//        if(from == 1){
+//            PhotoViewActivity.activity.finish();
+//            RecoResultActivity.activity.finish();
+//        }
     }
 
     @Override

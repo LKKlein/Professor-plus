@@ -157,7 +157,7 @@ public class MainActivityFragment extends Fragment {
             holder.card_university.setText(professor.getUniversity());
             Glide.with(getActivity())
                     .load(new File(professor.getUrl(), professor.getPath_name()))
-                    .placeholder(R.drawable.miao)
+                    .placeholder(R.drawable.pic_bg)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .transform(new CornersTransform(getActivity(), 15))
                     .crossFade()
@@ -194,6 +194,7 @@ public class MainActivityFragment extends Fragment {
                         Intent i = new Intent(getActivity(), WebViewActivity.class);
                         i.putExtra("url", url);
                         i.putExtra("name", JSON.parseObject(professor, Professor.class).getName());
+                        i.putExtra("from", 0);
                         startActivity(i);
                     } else if(url.equals("")){
                         Toast.makeText(getActivity(), "TA没有自我介绍...", Toast.LENGTH_SHORT).show();

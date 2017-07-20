@@ -51,7 +51,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
         fab_menu.setClosedOnTouchOutside(true);
         fab_menu.setAnimated(true);
 
-        String[] perms = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA};
+        String[] perms = {Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA,
+                Manifest.permission.ACCESS_NETWORK_STATE, Manifest.permission.ACCESS_WIFI_STATE};
 
         if (EasyPermissions.hasPermissions(this, perms)) {//检查是否获取该权限
             Log.i("权限申请", "已获取权限");
@@ -155,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityFragm
                 extra.putString("path", path.substring(0, path.lastIndexOf("/")));
                 extra.putString("name", path.substring(path.lastIndexOf("/")+1));
             }
-            Intent i = new Intent(MainActivity.this, CompareResultActivity.class);
+            Intent i = new Intent(MainActivity.this, PhotoViewActivity.class);
             i.putExtras(extra);
             startActivity(i);
         }else{

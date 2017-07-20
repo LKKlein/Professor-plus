@@ -12,5 +12,6 @@
     <color name="colorIcon">#717171</color>
     <color name="colorBackground">#D3D3D3</color>
     <color name="colorNoFoundTextBackground">#000000</color>
-    <color name="colorProgressBar">#4CAF50</color>
+    <color name="colorProgressBar">#4caf50</color>
+    <color name="translucent_background">#dd000000</color>
 </resources>

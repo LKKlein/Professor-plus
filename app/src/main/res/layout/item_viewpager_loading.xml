@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="@dimen/viewpager_card_width"
+    android:layout_height="@dimen/viewpager_card_height"
+    android:layout_margin="8dp"
+    android:id="@+id/cardview"
+    card_view:cardPreventCornerOverlap="false"
+    android:foreground="?attr/selectableItemBackground"
+    android:clickable="true"
+    tools:targetApi="lollipop"
+    android:stateListAnimator="@drawable/lift_on_touch"
+    card_view:cardBackgroundColor="#e0e0e0"
+    card_view:cardCornerRadius="10dp"
+    card_view:cardElevation="4dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ProgressBar
+            style="@android:style/Widget.DeviceDefault.Light.ProgressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
+
+</android.support.v7.widget.CardView>
+

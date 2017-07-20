@@ -24,8 +24,6 @@ public class ZoomHeaderView extends LinearLayout {
     private ZoomOutViewPager mViewPager;
     private float mFirstY;
     private TextView mCloseTxt;
-    //图片放到最大时候的y
-    private float mMaxY;
 
     private final int ANIMATE_LENGTH = 300;
 
@@ -35,7 +33,6 @@ public class ZoomHeaderView extends LinearLayout {
 
     public ZoomHeaderView(Context context, AttributeSet attrs) {
         super(context, attrs);
-
         mTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
     }
 
@@ -62,12 +59,12 @@ public class ZoomHeaderView extends LinearLayout {
                 float currentY = getY();
 
                 //向上滑动viewpager整体移动
-                if (currentY + moveY < 0 && currentY + moveY > -getHeight() / 2) {
+                if (currentY + moveY < 0 && currentY + moveY > -getHeight() / 4) {
                     doPagerUp(moveY, currentY);
                 }
 
                 //向下移动
-                if (currentY + moveY > 0 && currentY + moveY < 800) {
+                if (currentY + moveY > 0 && currentY + moveY < 1200) {
                     doPagerDown(moveY, currentY);
                     return true;
                 }
@@ -78,22 +75,18 @@ public class ZoomHeaderView extends LinearLayout {
                 float upY = ev.getY() - iDownY;
                 float currentUpY = getY();
                 //超过阀值 结束Activity
-
-                if (upY + currentUpY > 190) {
+                if (upY + currentUpY > 280) {
                     finish();
                 }
 
                 //不在任何阀值  恢复
-                if (currentUpY + upY > -getHeight() / 4 && currentUpY + upY < 190) {
-                    restore(upY + currentUpY);
-                }
-
-                //超过展开阀值
-                if (upY + currentUpY < -getHeight() / 4) {
-                    if (upY + currentUpY < mMaxY) {
-                        // 原本为展开
+                if (currentUpY + upY < 280) {
+                    if (currentUpY + upY < -getHeight() / 4) {
+                        restore(-getHeight() / 4);
+                    } else if (currentUpY + upY > 0) {
+                        restore((upY + currentUpY) / 4);
                     } else {
-                        // 原本为展开
+                        restore(upY + currentUpY);
                     }
                 }
 
@@ -110,7 +103,6 @@ public class ZoomHeaderView extends LinearLayout {
     }
 
     private void doPagerUp(float moveY, float currentY) {
-        mMaxY = currentY + moveY;
         setTranslationY(currentY + moveY);
         mCloseTxt.setAlpha(0f);
     }
@@ -135,16 +127,18 @@ public class ZoomHeaderView extends LinearLayout {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 float y = (float) animation.getAnimatedValue();
-                setTranslationY(y);
+                if (y < 0) {
+                    setTranslationY(y);
+                } else {
+                    int pos = mViewPager.getCurrentItem();
+                    View v = mViewPager.getChildAt(pos);
+                    v.setTranslationY(y);
+                }
                 mViewPager.canScroll = true;
             }
         });
         restoreVa.setDuration(ANIMATE_LENGTH);
         restoreVa.start();
-
-//    //禁止滑动
-//    ((CtrlLinearLayoutManager) mRecyclerView.getLayoutManager()).setScrollEnabled(false);
-
     }
 
     private void finish() {
@@ -154,7 +148,6 @@ public class ZoomHeaderView extends LinearLayout {
         finishTa.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-
             }
 
             @Override
@@ -198,5 +191,4 @@ public class ZoomHeaderView extends LinearLayout {
     public ZoomOutViewPager getViewPager() {
         return mViewPager;
     }
-
 }

@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:clipChildren="false">
 
     <cn.edu.swufe.fife.professor.ZoomHeaderView
         android:id="@+id/zoomHeader"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="500dp"
         android:clipChildren="false"
         android:gravity="center"
         android:orientation="vertical">
 
         <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="200dp">
+            android:layout_height="180dp">
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="200dp" />
+                android:layout_height="180dp" />
 
             <TextView
                 android:id="@+id/tv_close"
@@ -34,9 +34,20 @@
 
         <cn.edu.swufe.fife.professor.ZoomOutViewPager
             android:id="@+id/viewpager"
-            android:layout_width="300dp"
+            android:layout_width="@dimen/viewpager_card_width"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
             android:clipChildren="false" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="60dp" />
     </cn.edu.swufe.fife.professor.ZoomHeaderView>
 
-</LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom" />
+
+</android.support.design.widget.CoordinatorLayout>

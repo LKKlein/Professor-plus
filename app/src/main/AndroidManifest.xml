@@ -57,13 +57,12 @@
             android:name=".MainActivity"
             android:label="@string/app_name" />
         <activity
-            android:name=".CompareResultActivity"
-            android:label="@string/app_name" />
-        <activity
             android:name=".AddingProfessorActivity"
             android:label="@string/app_name" />
         <activity android:name=".PhotoViewActivity" />
-        <activity android:name=".RecoResultActivity"></activity>
+        <activity
+            android:name=".RecoResultActivity"
+            android:theme="@style/translucent" />
     </application>
 
 </manifest>
