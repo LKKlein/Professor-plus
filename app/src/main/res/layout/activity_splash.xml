@@ -10,7 +10,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="horizontal"
     android:background="@color/colorAccent"
-    tools:context="cn.edu.swufe.fife.professor.SplashActivity">
+    tools:context="cn.edu.swufe.fife.professor.activity.SplashActivity">
 
     <TextView
         android:id="@+id/splash_text_show"

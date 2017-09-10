@@ -1,4 +1,4 @@
-package cn.edu.swufe.fife.professor;
+package cn.edu.swufe.fife.professor.customView;
 
 import android.support.v4.view.ViewPager;
 import android.view.View;

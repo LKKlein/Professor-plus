@@ -1,9 +1,7 @@
-package cn.edu.swufe.fife.professor;
+package cn.edu.swufe.fife.professor.fragment;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,52 +15,70 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.alibaba.fastjson.JSON;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
-/**
- * A placeholder fragment containing a simple view.
- */
+import cn.edu.swufe.fife.professor.BaseApplication;
+import cn.edu.swufe.fife.professor.R;
+import cn.edu.swufe.fife.professor.Utils.Constant;
+import cn.edu.swufe.fife.professor.activity.WebViewActivity;
+import cn.edu.swufe.fife.professor.bean.DaoSession;
+import cn.edu.swufe.fife.professor.bean.Professors;
+import cn.edu.swufe.fife.professor.bean.ProfessorsDao;
+import cn.edu.swufe.fife.professor.customView.GlideRoundTransform;
+
 public class MainActivityFragment extends Fragment {
-    private List<String> professors;
+    private List<Professors> professors;
     private RecyclerView mRecyclerView;
     private MyAdapter mAdapter;
     private LinearLayout no_face;
+
+    private ProfessorsDao professorsDao = null;
 
     private OnFragmentInteractionListener mListener;
 
     public MainActivityFragment() {
     }
 
+    public static Fragment newInstance(String arg) {
+        MainActivityFragment fragment = new MainActivityFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("uid", arg);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
+
     public interface OnFragmentInteractionListener {
-        public void onFragmentInteraction(boolean up);
+        void onFragmentInteraction(boolean up);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         View inner_view = inflater.inflate(R.layout.fragment_main, container, false);
 
         mRecyclerView = (RecyclerView) inner_view.findViewById(R.id.main_recycler);
         no_face = (LinearLayout) inner_view.findViewById(R.id.no_face_linear);
-        int spanCount = 2;
+        final int spanCount = 2;
 
         RecyclerView.LayoutManager mLayoutManager = new StaggeredGridLayoutManager(
                 spanCount, StaggeredGridLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(mLayoutManager);
+        DaoSession daoSession = ((BaseApplication) getActivity().getApplication()).getDaoSession();
+        professorsDao = daoSession.getProfessorsDao();
+        professors = professorsDao.queryBuilder()
+                .where(ProfessorsDao.Properties.Uid.eq(getArguments().getString("uid")))
+                .orderDesc(ProfessorsDao.Properties.Id)
+                .build()
+                .list();
 
-        SharedPreferences ss = getActivity().getSharedPreferences("recent", Context.MODE_PRIVATE);
-        Set<String> recent = ss.getStringSet("recent faces", new LinkedHashSet<String>());
-        professors = new ArrayList<>();
-        professors.addAll(recent);
         if (professors.size() == 0){
             no_face.setVisibility(View.VISIBLE);
             mRecyclerView.setVisibility(View.GONE);
@@ -94,10 +110,11 @@ public class MainActivityFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        SharedPreferences ss = getActivity().getSharedPreferences("recent", Context.MODE_PRIVATE);
-        Set<String> recent = ss.getStringSet("recent faces", new LinkedHashSet<String>());
-        professors = new ArrayList<>();
-        professors.addAll(recent);
+        professors = professorsDao.queryBuilder()
+                .where(ProfessorsDao.Properties.Uid.eq(getArguments().getString("uid")))
+                .orderDesc(ProfessorsDao.Properties.Id)
+                .build()
+                .list();
         if (professors.size() == 0){
             no_face.setVisibility(View.VISIBLE);
             mRecyclerView.setVisibility(View.GONE);
@@ -128,12 +145,13 @@ public class MainActivityFragment extends Fragment {
 
     private class MyAdapter extends RecyclerView.Adapter<MyViewHolder>{
 
-        private List<String> data = null;
-        MyAdapter(List<String> data) {
+        private List<Professors> data = null;
+
+        MyAdapter(List<Professors> data) {
             this.data = data;
         }
 
-        private void setData(List<String> data){
+        private void setData(List<Professors> data) {
             this.data = data;
         }
 
@@ -151,15 +169,14 @@ public class MainActivityFragment extends Fragment {
         @Override
         public void onBindViewHolder(MyViewHolder holder, int position) {
             holder.position = position;
-            String s = data.get(position);
-            Professor professor = JSON.parseObject(s, Professor.class);
-            holder.card_name.setText(professor.getName());
-            holder.card_university.setText(professor.getUniversity());
+            Professors s = data.get(position);
+            holder.card_name.setText(s.getName());
+            holder.card_university.setText(s.getUniversity());
             Glide.with(getActivity())
-                    .load(new File(professor.getUrl(), professor.getPath_name()))
-                    .placeholder(R.drawable.pic_bg)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .transform(new CornersTransform(getActivity(), 15))
+                    .load(Constant.professor_domain + s.getFace_token())
+                    .placeholder(R.drawable.pictures_loading)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .transform(new GlideRoundTransform(getActivity(), 15))
                     .crossFade()
                     .into(holder.card_img);
         }
@@ -188,25 +205,23 @@ public class MainActivityFragment extends Fragment {
 
                 @Override
                 public void onClick(View v) {
-                    String professor = professors.get(position);
-                    String url = JSON.parseObject(professor, Professor.class).getWeb_page();
-                    if (url.startsWith("http")){
+                    Professors professor = professors.get(position);
+                    if (professor.getWeb_url().startsWith("http")) {
                         Intent i = new Intent(getActivity(), WebViewActivity.class);
-                        i.putExtra("url", url);
-                        i.putExtra("name", JSON.parseObject(professor, Professor.class).getName());
-                        i.putExtra("from", 0);
+                        i.putExtra("url", professor.getWeb_url());
+                        i.putExtra("name", professor.getName());
                         startActivity(i);
-                    } else if(url.equals("")){
+                    } else if (professor.getWeb_url().equals("")) {
                         Toast.makeText(getActivity(), "TA没有自我介绍...", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(getActivity(), url, Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), professor.getWeb_url(), Toast.LENGTH_LONG).show();
                     }
                 }
             });
         }
     }
 
-    public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
+    public static class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
 
         private int spanCount;
         private int spacing;

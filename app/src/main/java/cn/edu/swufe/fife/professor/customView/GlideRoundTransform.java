@@ -1,6 +1,7 @@
-package cn.edu.swufe.fife.professor;
+package cn.edu.swufe.fife.professor.customView;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
@@ -11,26 +12,29 @@ import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 
 /**
- * 圆角效果的Transform
- * Created by Raye on 2016/5/10.
+ *  Created by Klein on 2017/6/22.
+ *  将图片转化为圆角
+ *  构造中第二个参数定义半径
  */
-class CornersTransform extends BitmapTransformation {
-    private float radius;
-    public CornersTransform(Context context) {
-        super(context);
-        radius = 10;
+public class GlideRoundTransform extends BitmapTransformation {
+
+    private static float radius = 0f;
+
+    public GlideRoundTransform(Context context) {
+        this(context, 4);
     }
 
-    CornersTransform(Context context, float radius) {
+    public GlideRoundTransform(Context context, int dp) {
         super(context);
-        this.radius = radius;
+        this.radius = Resources.getSystem().getDisplayMetrics().density * dp;
     }
 
     @Override
     protected Bitmap transform(BitmapPool pool, Bitmap toTransform, int outWidth, int outHeight) {
-        return cornersCrop(pool,toTransform);
+        return roundCrop(pool, toTransform);
     }
-    private Bitmap cornersCrop(BitmapPool pool, Bitmap source) {
+
+    private static Bitmap roundCrop(BitmapPool pool, Bitmap source) {
         if (source == null) return null;
 
         Bitmap result = pool.get(source.getWidth(), source.getHeight(), Bitmap.Config.ARGB_8888);
@@ -49,6 +53,6 @@ class CornersTransform extends BitmapTransformation {
 
     @Override
     public String getId() {
-        return getClass().getName();
+        return getClass().getName() + Math.round(radius);
     }
 }

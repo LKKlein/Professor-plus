@@ -14,4 +14,25 @@
     <string name="compare_found_text_reddirect">Click me to read more information…</string>
     <string name="uploading">uploading…</string>
     <string name="photo_name"> name </string>
+    <string name="loading">加载中…</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="choose_professor_img_hint">(请选择一张教授的图片)</string>
+    <string name="name_title">姓名：</string>
+    <string name="professor_name_hint">请输入教授的姓名</string>
+    <string name="uni_title">学校：</string>
+    <string name="professor_uni_edit_hint">请输入教授所在的院校</string>
+    <string name="web_page_title">个人网址：</string>
+    <string name="professor_web_page_edit_hint">请输入教授的个人网址</string>
+    <string name="submit_btn_text">提\t\t\t\t交</string>
+    <string name="name_test">李庆</string>
+    <string name="university_title">学校：</string>
+    <string name="university_test">西南财经大学</string>
+    <string name="story_title">故事：</string>
+    <string name="story_write_hint">请写下这种照片的故事（可忽略）</string>
+    <string name="tag_title">标签：</string>
+    <string name="create_time_title">创建时间：</string>
+    <string name="create_time_test">2017年8月22日 17:24:33</string>
+    <string name="story_test">那一年，在西南财经大学</string>
 </resources>

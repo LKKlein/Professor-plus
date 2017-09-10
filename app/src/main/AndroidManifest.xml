@@ -12,10 +12,20 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!-- 获取wifi网络状态的信息 -->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <!-- 允许读取手机状态 用于创建BmobInstallation -->
+    <!-- 访问手机当前状态, 需要某些信息用于网络定位 -->
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <!-- 保持CPU 运转，屏幕和键盘灯有可能是关闭的,用于文件上传和下载 -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <!-- 通过GPS得到精确位置 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- 通过网络得到粗略位置 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <!-- 修改WiFi状态，发起WiFi扫描, 需要WiFi信息用于网络定位 -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <!-- 访问网络的变化, 需要某些信息用于网络定位 -->
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
 
     <application
         android:name=".BaseApplication"
@@ -24,12 +34,23 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <service android:name="com.amap.api.location.APSService" />
 
-        <!-- <meta-data android:name="DATABASE" android:value="professor.db"/> -->
-        <!-- <meta-data android:name="VERSION" android:value="1"/> -->
-        <!-- <meta-data android:name="QUERY_LOG" android:value="true"/> -->
-        <!-- <meta-data android:name="DOMAIN_PACKAGE_NAME"  android:value="cn.edu.swufe.fife.professor.bean"/> -->
-
+        <meta-data
+            android:name="DATABASE"
+            android:value="professor.db" />
+        <meta-data
+            android:name="VERSION"
+            android:value="1" />
+        <meta-data
+            android:name="QUERY_LOG"
+            android:value="true" />
+        <meta-data
+            android:name="DOMAIN_PACKAGE_NAME"
+            android:value="cn.edu.swufe.fife.professor.bean" />
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="2bba2f7bb5984ae331100c3695452d4d" />
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="cn.edu.swufe.fife.professor"
@@ -41,7 +62,7 @@
         </provider>
 
         <activity
-            android:name=".SplashActivity"
+            android:name=".activity.SplashActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -51,18 +72,23 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".WebViewActivity"
+            android:name=".activity.WebViewActivity"
             android:label="@string/app_name" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:label="@string/app_name" />
         <activity
-            android:name=".AddingProfessorActivity"
+            android:name=".activity.AddingProfessorActivity"
             android:label="@string/app_name" />
-        <activity android:name=".PhotoViewActivity" />
+        <activity android:name=".activity.PhotoViewActivity" />
         <activity
-            android:name=".RecoResultActivity"
+            android:name=".activity.RecoResultActivity"
             android:theme="@style/translucent" />
+        <activity android:name=".activity.LoginActivity" />
+        <activity android:name=".activity.RegisterInformationActivity" />
+        <activity android:name=".activity.LoginConfirmActivity" />
+        <activity android:name=".activity.CountryCodeActivity" />
+        <activity android:name=".activity.SettingActivity" />
     </application>
 
 </manifest>

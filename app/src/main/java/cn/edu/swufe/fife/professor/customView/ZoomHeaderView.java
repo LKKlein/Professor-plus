@@ -1,4 +1,4 @@
-package cn.edu.swufe.fife.professor;
+package cn.edu.swufe.fife.professor.customView;
 
 import android.animation.ValueAnimator;
 import android.app.Activity;
@@ -12,6 +12,8 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import cn.edu.swufe.fife.professor.R;
 
 /**
  * Created by wing on 12/4/16.
