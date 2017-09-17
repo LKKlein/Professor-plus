@@ -17,6 +17,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDialog;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,17 +38,18 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.qiniu.android.http.ResponseInfo;
 import com.qiniu.android.storage.UpCompletionHandler;
 
+import org.json.JSONException;
+
 import java.io.File;
 
-import cn.edu.swufe.fife.professor.BaseApplication;
 import cn.edu.swufe.fife.professor.R;
 import cn.edu.swufe.fife.professor.Utils.AipFaceUtils;
 import cn.edu.swufe.fife.professor.Utils.CommonUtils;
 import cn.edu.swufe.fife.professor.Utils.Constant;
+import cn.edu.swufe.fife.professor.Utils.OkHttpUtil;
 import cn.edu.swufe.fife.professor.Utils.QiniuUtils;
-import cn.edu.swufe.fife.professor.bean.DaoSession;
 import cn.edu.swufe.fife.professor.bean.Professors;
-import cn.edu.swufe.fife.professor.bean.ProfessorsDao;
+import cn.edu.swufe.fife.professor.customView.CommonProgress;
 import cn.edu.swufe.fife.professor.customView.GlideRoundTransform;
 
 import static cn.edu.swufe.fife.professor.Utils.CommonUtils.createFileName;
@@ -61,21 +64,21 @@ public class AddingProfessorActivity extends AppCompatActivity {
     private EditText web_page;
     private Button adding_complete;
     private PopupWindow popupWindow = null;
+    private RelativeLayout adding_root_rl;
+    private CommonProgress commonProgress = null;
 
-    private boolean hasFaceInPicture = false;
-    private boolean isExist = false;
+    private int isExist = 3;  // 0:教授已存在； 1：教授暂时不存在； 2：正在上传，请稍等，并检查网络； 3： 还未选择照片
 
     private String image_path = "";
     private String image_name = "";
-    private String professor_name = "";
-    private String professor_uni = "";
-    private String professor_page = "";
+    private String professor_name = null;
+    private String professor_uni = null;
+    private String professor_page = null;
 
     public final int REQUEST_IMAGE_CAPTURE = 1000;
     public final int CODE_GALLERY_REQUEST = 1001;
 
     private Professors professors = null;
-    private ProfessorsDao professorsDao = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,8 +96,6 @@ public class AddingProfessorActivity extends AppCompatActivity {
             }
         });
 
-        DaoSession daoSession = ((BaseApplication) getApplication()).getDaoSession();
-        professorsDao = daoSession.getProfessorsDao();
         professors = new Professors();
 
         initView();
@@ -109,6 +110,8 @@ public class AddingProfessorActivity extends AppCompatActivity {
         adding_uni = (EditText) findViewById(R.id.adding_university);
         web_page = (EditText) findViewById(R.id.adding_webPage);
         adding_complete = (Button) findViewById(R.id.adding_complete);
+        adding_root_rl = (RelativeLayout) findViewById(R.id.adding_root);
+        commonProgress = new CommonProgress(this);
 
         Glide.with(this)
                 .load(R.mipmap.ic_account_box_black_48dp)
@@ -127,7 +130,58 @@ public class AddingProfessorActivity extends AppCompatActivity {
         adding_complete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                professor_name = adding_nameEdit.getText().toString();
+                professor_uni = adding_uni.getText().toString();
+                professor_page = web_page.getText().toString();
 
+                if (isExist == 1) {
+                    if (!TextUtils.isEmpty(professor_name) && !TextUtils.isEmpty(professor_uni) && !TextUtils.isEmpty(professor_page)) {
+                        professors.setName(professor_name);
+                        professors.setUniversity(professor_uni);
+                        professors.setWeb_url(professor_page);
+                        professors.setGroup_name("professor_1");
+                        final String uid = professors.getFace_token();
+                        final String userInfo = professors.getJsonUserInfo();
+                        final AipFaceUtils aipFaceUtils = new AipFaceUtils();
+                        commonProgress.setUpProgress(R.id.adding_progress);
+                        aipFaceUtils.syncManager(new AipFaceUtils.OnSyncTask() {
+                            @Override
+                            public String OnRequestGoing() {
+                                String result = null;
+                                try {
+                                    result = aipFaceUtils.facesetAddProfessor(uid, userInfo, image_path + "/" + image_name);
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                JSONObject jsonObject = JSON.parseObject(result);
+                                if (jsonObject.containsKey("error_code")) {
+                                    return "error";
+                                } else {
+                                    return OkHttpUtil.getStringFromServer(Constant.insert_professor_url + professors.getJsonProfessor());
+                                }
+                            }
+
+                            @Override
+                            public void OnRequestComplete(String result) {
+                                commonProgress.dismiss();
+                                if (result.equals("error")) {
+                                    Toast.makeText(AddingProfessorActivity.this, "提交错误，请稍候重试！", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(AddingProfessorActivity.this, "添加成功！", Toast.LENGTH_SHORT).show();
+                                    AddingProfessorActivity.this.finish();
+                                }
+                            }
+                        });
+                    } else {
+                        Toast.makeText(AddingProfessorActivity.this, "请完善教授的各项信息！", Toast.LENGTH_SHORT).show();
+                    }
+                } else if (isExist == 2) {
+                    Toast.makeText(AddingProfessorActivity.this, "请稍候，并检查您的网络！", Toast.LENGTH_SHORT).show();
+                } else if (isExist == 0) {
+                    Toast.makeText(AddingProfessorActivity.this, "该教授已存在，请勿再次上传！", Toast.LENGTH_SHORT).show();
+                } else if (isExist == 3) {
+                    Toast.makeText(AddingProfessorActivity.this, "您还未选择教授照片！", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -243,6 +297,7 @@ public class AddingProfessorActivity extends AppCompatActivity {
                 image_path = path.substring(0, path.lastIndexOf("/"));
                 image_name = path.substring(path.lastIndexOf("/") + 1);
             }
+            isExist = 2;
 
             Glide.with(AddingProfessorActivity.this)
                     .load(image_path + "/" + image_name)
@@ -270,7 +325,7 @@ public class AddingProfessorActivity extends AppCompatActivity {
                         if (scores >= 80) {
 
                             /* 识别到某位教授, 提示该教授已存在 */
-                            isExist = true;
+                            isExist = 0;
                             final String professor_name = jsonResult.getJSONObject("user_info").getString("name");
                             AlertDialog.Builder builder = new AlertDialog.Builder(AddingProfessorActivity.this);
                             builder.setTitle("提示");
@@ -288,7 +343,7 @@ public class AddingProfessorActivity extends AppCompatActivity {
                             adding_img_edit.setVisibility(View.VISIBLE);
                             adding_img_tv.setVisibility(View.VISIBLE);
                         } else {
-                            isExist = false;
+                            isExist = 1;
                             QiniuUtils qiniuUtils = new QiniuUtils();
                             qiniuUtils.setBucket(2);
                             qiniuUtils.upload(image_path + "/" + image_name, CommonUtils.getMd5ByFile(image_path + "/" + image_name),
@@ -296,7 +351,6 @@ public class AddingProfessorActivity extends AppCompatActivity {
                                         @Override
                                         public void complete(String key, ResponseInfo info, org.json.JSONObject response) {
                                             professors.setFace_token(key);
-                                            professors.setWeb_url(Constant.professor_domain + "key");
                                         }
                                     });
                         }

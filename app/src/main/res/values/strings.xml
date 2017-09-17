@@ -35,4 +35,5 @@
     <string name="create_time_title">创建时间：</string>
     <string name="create_time_test">2017年8月22日 17:24:33</string>
     <string name="story_test">那一年，在西南财经大学</string>
+    <string name="no_favorite_hint">没有找到相关收藏</string>
 </resources>

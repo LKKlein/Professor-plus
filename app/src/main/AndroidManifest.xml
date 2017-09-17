@@ -37,18 +37,6 @@
         <service android:name="com.amap.api.location.APSService" />
 
         <meta-data
-            android:name="DATABASE"
-            android:value="professor.db" />
-        <meta-data
-            android:name="VERSION"
-            android:value="1" />
-        <meta-data
-            android:name="QUERY_LOG"
-            android:value="true" />
-        <meta-data
-            android:name="DOMAIN_PACKAGE_NAME"
-            android:value="cn.edu.swufe.fife.professor.bean" />
-        <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="2bba2f7bb5984ae331100c3695452d4d" />
         <provider

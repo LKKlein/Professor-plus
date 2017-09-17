@@ -177,7 +177,7 @@ public class MainActivityFragment extends Fragment {
                     .placeholder(R.drawable.pictures_loading)
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .transform(new GlideRoundTransform(getActivity(), 15))
-                    .crossFade()
+                    .dontAnimate()
                     .into(holder.card_img);
         }
 

@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:clipChildren="false">
 
-    <cn.edu.swufe.fife.professor.ZoomHeaderView
+    <cn.edu.swufe.fife.professor.customView.ZoomHeaderView
         android:id="@+id/zoomHeader"
         android:layout_width="match_parent"
         android:layout_height="500dp"
@@ -32,7 +32,7 @@
                 android:textColor="#fff" />
         </RelativeLayout>
 
-        <cn.edu.swufe.fife.professor.ZoomOutViewPager
+        <cn.edu.swufe.fife.professor.customView.ZoomOutViewPager
             android:id="@+id/viewpager"
             android:layout_width="@dimen/viewpager_card_width"
             android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="60dp" />
-    </cn.edu.swufe.fife.professor.ZoomHeaderView>
+    </cn.edu.swufe.fife.professor.customView.ZoomHeaderView>
 
     <RelativeLayout
         android:layout_width="match_parent"
