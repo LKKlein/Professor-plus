@@ -23,7 +23,7 @@
     <string name="professor_name_hint">请输入教授的姓名</string>
     <string name="uni_title">学校：</string>
     <string name="professor_uni_edit_hint">请输入教授所在的院校</string>
-    <string name="web_page_title">个人网址：</string>
+    <string name="web_url_title">个人网址：</string>
     <string name="professor_web_page_edit_hint">请输入教授的个人网址</string>
     <string name="submit_btn_text">提\t\t\t\t交</string>
     <string name="name_test">李庆</string>
@@ -36,4 +36,5 @@
     <string name="create_time_test">2017年8月22日 17:24:33</string>
     <string name="story_test">那一年，在西南财经大学</string>
     <string name="no_favorite_hint">没有找到相关收藏</string>
+    <string name="web_page_title">个人网页:</string>
 </resources>

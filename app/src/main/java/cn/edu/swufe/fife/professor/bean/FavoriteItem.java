@@ -1,6 +1,8 @@
 package cn.edu.swufe.fife.professor.bean;
 
 import android.content.Context;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import cn.edu.swufe.fife.professor.BaseApplication;
 import cn.edu.swufe.fife.professor.Utils.CommonUtils;
@@ -9,7 +11,7 @@ import cn.edu.swufe.fife.professor.Utils.CommonUtils;
  * Created by Klein on 2017/9/16.
  */
 
-public class FavoriteItem {
+public class FavoriteItem implements Parcelable {
     private String pid;
     private String name;
     private String uni;
@@ -142,4 +144,49 @@ public class FavoriteItem {
         setWeb_url(professors.getWeb_url());
 
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.pid);
+        dest.writeString(this.name);
+        dest.writeString(this.uni);
+        dest.writeString(this.web_url);
+        dest.writeString(this.local_path);
+        dest.writeString(this.url);
+        dest.writeString(this.story);
+        dest.writeString(this.tags);
+        dest.writeString(this.ptime);
+        dest.writeString(this.place_name);
+    }
+
+    protected FavoriteItem(Parcel in) {
+        this.pid = in.readString();
+        this.name = in.readString();
+        this.uni = in.readString();
+        this.web_url = in.readString();
+        this.local_path = in.readString();
+        this.url = in.readString();
+        this.story = in.readString();
+        this.tags = in.readString();
+        this.ptime = in.readString();
+        this.place_name = in.readString();
+    }
+
+    public static final Parcelable.Creator<FavoriteItem> CREATOR = new Parcelable.Creator<FavoriteItem>() {
+        @Override
+        public FavoriteItem createFromParcel(Parcel source) {
+            return new FavoriteItem(source);
+        }
+
+        @Override
+        public FavoriteItem[] newArray(int size) {
+            return new FavoriteItem[size];
+        }
+    };
 }

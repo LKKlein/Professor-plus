@@ -2,7 +2,7 @@
 <resource>
     <external-url
         name="images"
-        url="Professor+/photos/" />
+        url="Professor/photos/" />
     <root-path
         name="root_path"
         path="." />

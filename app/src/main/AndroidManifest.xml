@@ -39,6 +39,7 @@
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="2bba2f7bb5984ae331100c3695452d4d" />
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="cn.edu.swufe.fife.professor"
@@ -76,7 +77,9 @@
         <activity android:name=".activity.RegisterInformationActivity" />
         <activity android:name=".activity.LoginConfirmActivity" />
         <activity android:name=".activity.CountryCodeActivity" />
-        <activity android:name=".activity.SettingActivity" />
+        <activity android:name=".activity.FavoriteViewerActivity" />
+        <activity android:name=".activity.GalleryViewerActivity" />
+        <activity android:name=".activity.SettingActivity"></activity>
     </application>
 
 </manifest>
